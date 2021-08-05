@@ -3,14 +3,14 @@
 $files = array(
     'UID12345' => array(
         'content_type' => 'application/zip', 
-        'suggested_name' => 'codex-file.zip', 
+        'suggested_name' => 'codex.zip', 
         'file_path' => 'tempfile.zip',
         'type' => 'local_file'
     ),
     'UID67890' => array(
         'content_type' => 'audio/mpeg', 
-        'suggested_name' => 'music-codex.mp3', 
-        'file_path' => 'https://www.dropbox.com/XXXXXXX/song.mp3?dl=1',
+        'suggested_name' => 'codex2.zip', 
+        'file_path' => 'tempfile2.zip',
         'type' => 'remote_file'
     ),
 );
