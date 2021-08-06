@@ -1,148 +1,90 @@
-<?php
-/*
- *      genurl.php
- *      
- *      Copyright 2010-11 Sayan "Riju" Chakrabarti <me@sayanriju.co.cc>
- *      
- *      This program is free software; you can redistribute it and/or modify
- *      it under the terms of the GNU General Public License as published by
- *      the Free Software Foundation; either version 2 of the License, or
- *      (at your option) any later version.
- *
- * ********************************************************************
- *
- * To use, first create a table in your mysql database using the
- * following SQL statement:
- * 
- *      CREATE TABLE IF NOT EXISTS `permalink_table` (
- *        `tid` varchar(14) NOT NULL,
- *        `permalink` varchar(2083) NOT NULL,
- *        `expires_at` int(11) NOT NULL,
- *        `single_use` tinyint(1) NOT NULL DEFAULT '0',
- *        PRIMARY KEY (`tid`)
- *      );
- * 
- *   Next, change the following database related variables accordingly.
- *
- * ********************************************************************
- */
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Single use download link</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-$DBHOST="localhost";
-$DBUSER="root";
-$DBPASS="qwerty";
-$DBNAME="mydb";
-$TABLE_NAME="permalink_table";
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-function generate_temp_url($permalink,$redirector_page,$expires_in_minutes,$single_use=0,$dbhost,$dbuser,$dbpass,$dbname,$table_name){
-    $tid=uniqid();
-    $expires_at=time()+$expires_in_minutes*60;
-    $single_use=($single_use!=0)?1:0;
-    $conn=mysql_connect($dbhost,$dbuser,$dbpass) or die(mysql_error());
-    mysql_select_db($dbname) or die(mysql_error());
-    $sql=sprintf("INSERT INTO %s(tid,permalink,expires_at,single_use) VALUES('%s','%s','%s','%s')",
-        mysql_real_escape_string($table_name),
-        mysql_real_escape_string($tid),
-        mysql_real_escape_string($permalink),
-        mysql_real_escape_string($expires_at),
-        mysql_real_escape_string($single_use));
-    mysql_query($sql) or die(mysql_error());
-    mysql_close($conn);
-
-    return "$redirector_page?tid=$tid";   
-}
-
-
-function show_error(){
-    header("HTTP/1.0 404 Not Found");
-    die("<h1>Page Not Found!</h1>The link you specified is either invalid or has expired");    
-}
-
-if(!isset($_GET['tid'])):
-
-/* ************** Generator Code Section *************** */
-
-?>
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-
-    <head>
-        <title>untitled</title>
-        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
-        <meta name="generator" content="Geany 0.18" />
-    <script type="text/javascript">
-    var toggle=0;
-    function fun(){
-        var el=document.getElementById("expires_in");
-        if(toggle==0){
-            el.disabled=true;
-            toggle=1;
-        }
-        else{
-            el.disabled=false;
-            toggle=0;
-        }    
-    }
-    </script>    
-    </head>
-    <body>
-<?php
-    if(!isset($_POST['permalink'])):
-        // First time in Page, show form:
-?>
-    <div style="text-align:center;margin:3em auto;">
-    <form name="myform" id="myform" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
-        Permalink:&nbsp;&nbsp;
-        <input type="text" name="permalink" id="permalink" value="http://"/>
-        <br/><br/>
-        Expires in:&nbsp;&nbsp;&nbsp;
-        <input type="text" name="expires_in" id="expires_in" size="6" value="60"/>&nbsp; minutes
-        <br/><br/>
-        Single Use Only?&nbsp;&nbsp;&nbsp;<input type="checkbox" name="single_use" id="single_use" onclick="javascript:fun();" />
-        <br/><br/>
-        <input type="submit" value="Generate"/>
-    </form>
-    </div>
-    <?php
-    else:
-    // Form submitted, generate and return temporary url
-    $curpage="http://".$_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
-    $single_use=($_POST['single_use'])?1:0;
-    echo "Redirection URL:<br/>";
-    echo generate_temp_url($_POST['permalink'],$curpage,$_POST['expires_in'],$single_use,$DBHOST,$DBUSER,$DBPASS,$DBNAME,$TABLE_NAME);
-    die();
-    endif;
-else:
-
-/* ************ Redirection Code Section ******************* */
-
-    $tid=$_GET['tid'];     // get temporary id from url
-    // fetch corrs permalink from database
-    $conn=mysql_connect($DBHOST,$DBUSER,$DBPASS) or die(mysql_error());
-    mysql_select_db($DBNAME) or die(mysql_error());
-    $sql="SELECT permalink,expires_at,single_use FROM $TABLE_NAME WHERE tid='".mysql_real_escape_string($tid)."'";
-    $result=mysql_query($sql) or die(mysql_error());
-    if(mysql_num_rows($result)==0)
-        show_error();
-
-    $row=mysql_fetch_row($result);
-    $permalink=$row[0];
-    $etime=$row[1];
-    $single_use=$row[2];
-    // Time expired?
-    if((time()-$etime)>0 && $single_use==0)
-        show_error();
-    // First, delete from temp url database, if single_use url
-    if($single_use==1){
-        $sql="DELETE FROM $TABLE_NAME WHERE tid='".mysql_real_escape_string($tid)."'";
-        mysql_query($sql) or die(mysql_error()) ;
-    }
-    mysql_close($conn);
-    // Redirect to permalink
-    header("HTTP/1.0 307 Temporary Redirect");
-    header( 'Location: '.$permalink) ;
-endif;
-?>
     
-</body>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="bootstrap/google-code-prettify/prettify.js"></script>
+	<script type="text/javascript">
+			$(document).ready(function() {
+				$("*").DomInspector({
+					callback : function(results) {
+						// Returns an Array of each element
+						$(".results").html(results.join(", "));
+					}
+				
+				});
+			
+				// make code pretty
+			    window.prettyPrint && prettyPrint();
+			});
+			
+	</script>
+		
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="bootstrap/css/docs.css" rel="stylesheet">
+    <link href="bootstrap/google-code-prettify/prettify.css" rel="stylesheet">
+    <style type="text/css">
+    	body {
+    		padding-top: 25px;
+    	}
+    </style>
+  </head>
+
+  <body>
+
+    <div class="container">
+		<!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1>Single use download</h1>
+        <br>
+        <h2>Brief</h2><br>
+		<p>This script was written to be a very easy way for non-programmers to be able to create a secure way to share a single file. It is ideal for 
+		bands looking to give a single song to a single person, and invalidating the link once the song has been downloaded. However, 
+		it will work for any type of file.</p>
+		<br>
+		<h2>Description</h2><br>
+		<p>This script allows you to generate a unique link to download a file. This file will only be allowed to be downloaded one time. 
+		This link will also have also have an expiration date set on it.</p>
+		<br>
+		<p>For instance, if you wanted to sell a song for your band. You sold the song on your website for $1, you could use this script 
+		to allow that person to download your song only one time. It would only give them a limited number of hours/days/weeks/years 
+		to claim their download.</p>
+		<br>
+		<p>You can also mask the name of the file being downloaded, for further protection. For example, if your song was called 
+		"greatsong.zip", you could set the download link as "Band_Awesome-Awesome_Song.zip" (it is not a good idea to leave spaces in URL titles)</p>
+    <h2>Update</h2><br>
+    <p>On July 11, 2016 a multi-file feature branch was merged with the single file. It is now possible to download multiple files at once. </p>
+        <br>
+        <h2>Example</h2><br>
+        <p><a href="/singleuse/generate.php?1234">Generate a download link</a></p>
+        <br>
+        <h2>Git the code</h2><br>
+        <p><a href="https://github.com/joshpangell/single-use">Github repository</a></p>
+        <br>
+		</div>
+	</div>
+	
+     <footer class="footer">
+      <div class="container">
+		<p>
+         Made by Josh Pangell <a href="http://joshpangell.com">http://joshpangell.com</a><br>
+         This demo page was built using <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter bootstrap</a>
+        </p>
+      </div>
+    </footer>
+
+    </div> <!-- /container -->
+
+
+  </body>
 </html>
