@@ -1,98 +1,83 @@
+<?php include('header.php'); ?>
+<div class="container">
+<div class="jumbotron"><p class="text-xl-center">
 <?php
-/**
- *	This file does the actual downloading
- *	It will take in a query string and return either the file, 
- *	or failure
- *
- *	Expects: download.php?key1234567890
- */
- 
-	include("variables.php");
-	
-	// The input string
-	$key = trim($_GET['key']);
-	$i = trim($_GET['i']);
-	
-	/*
-	 *	Retrive the keys
-	 */
-	$keys = file('keys/keys');
-	$match = false;
-	
-	/*
-	 *	Loop through the keys to find a match
-	 *	When the match is found, remove it
-	 */
-	foreach($keys as &$one) {
-		if(rtrim($one)==$key) {
-			$match = true;
-			$one = '';
-		}
-	}
-	
-	/*
-	 *	Puts the remaining keys back into the file
-	 */
-	file_put_contents('keys/keys',$keys);
-	
-	/*
-	 * If we found a match
-	 */
-	if($match !== false) {
-		
-		/*
-		 *	Forces the browser to download a new file
-		 */
-		$contenttype = $PROTECTED_DOWNLOADS[$i]['content_type'];
-		$filename = $PROTECTED_DOWNLOADS[$i]['suggested_name'];
-		$file = $PROTECTED_DOWNLOADS[$i]['protected_path'];
-		$remote_file = $PROTECTED_DOWNLOADS[$i]['remote_path'];
+// retrieve link
+if (isset($_GET["link"]) && preg_match('/^[0-9A-F]{40}$/i', $_GET["link"])) {
+    $link = $_GET["link"];
+}else{
+    echo "<h1>Valid link not provided.</h1>";
+	exit();
+}
+//starting verification with the $ct variable
+$ct=0;
+$currenttime= $_SERVER["REQUEST_TIME"];
+$currentdate = date('M d, Y h:i:s A', $currenttime);
+echo  'Current Date '.$currentdate.'<br/>';
+// verify link get necessary information we will need to preocess request
+$result = $db->query("SELECT * FROM links WHERE link='$link' ") ;
+while ($row = $result->fetch_assoc()) {
+$linkdb = $row['link'];
+$filedownload = $row['file'];
+$tstamp = $row['tstamp'];
+$expire = $row['expire'];
+$counting = $row['counting'];
+$newcount=$counting-1;
 
-		set_time_limit(0);
 
-		// If a remote file is set
-		if($remote_file) {
+//convert timestamp to readable date the show expiration date and time
+$date = date('M d, Y h:i:s A', $expire);
+echo 'To Expire on '.$date.'<br/>';
 
-			$file=fopen($remote_file,'r');
-			header("Content-Type:text/plain");
-			header("Content-Disposition: attachment; filename=\"{$filename}\"");
-			fpassthru($file);
+// Check to see if link has expired
+if ($currenttime > $expire) {
+    echo "We are so sorry the link has expired.";
+	exit();
+// delete link so it can't be used again
+mysqli_query($db,"DELETE FROM links WHERE link='$link' ");
+	exit();
+}
 
-		// This is a local file
-		} else {
-		
-			header("Content-Description: File Transfer");
-			header("Content-type: {$contenttype}");
-			header("Content-Disposition: attachment; filename=\"{$filename}\"");
-			header("Content-Length: " . filesize($file));
-			header('Pragma: public');
-			header("Expires: 0");
-			readfile($file);
+if ($linkdb==$link) {
+    echo 'You have '.$newcount.' more times to access this link.';
+	mysqli_query($db,"UPDATE links SET counting='$newcount' WHERE link='$linkdb' ");
+	$ct=1;
+}
+else {
+    echo "Valid link not provided or link has expired.";
+	exit();
+}
+}
 
-		}
-		
-		// Exit
-		exit;
-	
-	} else {
-	
-	/*
-	 * 	We did NOT find a match
-	 *	OR the link expired
-	 *	OR the file has been downloaded already
-	 */
+// delete link so it can't be used again
+mysqli_query($db,"DELETE FROM links WHERE link='$link' AND counting < '1' ");
 
+//FILE DOWNLOAD
+//path to file
+if($ct==1){
+$path = ''; 
+$path = "files/$filedownload"; 
+echo $path;
+
+$mime_type=mime_content_type($path); 
+
+header('Content-Description: File Transfer');
+header('Content-Type: application/octet-stream');
+header('Content-Disposition: attachment; filename="'.$path.'"');
+header('Content-Transfer-Encoding: binary');
+header('Expires: 0');
+header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+header('Pragma: public');
+header('Content-Length: ' . filesize($path)); //Absolute URL
+ob_clean();
+flush();
+readfile($path); //Absolute URL
+exit();
+}else{
+	echo '<p>This file has already been dowloaded the maximum number of times.</p>';
+}
 ?>
-
-<html>
-	<head>
-		<title>Download expired</title>
-	</head>
-	<body>
-		<h1>Download expired</h1>
-	</body>
-</html>
-
+</p>
+</div>
 <?php
-	} // end matching
-?>
+include_once('footer.php');

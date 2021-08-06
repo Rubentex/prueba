@@ -1,90 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Single use download link</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<?php include('header.php');
+if(isset($_POST['submit'])){
+	 $errors= array();
+      $file_name = $_FILES['file']['name'];
+      $file_size =$_FILES['file']['size'];
+      $file_tmp =$_FILES['file']['tmp_name'];
+      $file_type=$_FILES['file']['type'];
+	  $fileend=explode('.',$file_name);
+      $file_ext=strtolower(end($fileend));
+      
+      $extensions= array("jpeg","jpg","png","pdf");
+      
+      if(in_array($file_ext,$extensions)=== false){
+         $errors[]="extension not allowed, please choose a JPEG or PNG file.";
+      }
+      
+      if($file_size > 2097152){
+         $errors[]='File size must be excately 2 MB';
+      }
+      
+      if(empty($errors)==true){
+         move_uploaded_file($file_tmp,"files/".$file_name);
+         //echo "Success";
+      }else{
+         print_r($errors);
+      }
+   
+   
+$expire=$_POST['date'];
+$counting=$_POST['counting'];
+$date = date('M d, Y h:i:s A', strtotime($expire));
+$dbdate = date('Y M d H:i:s', strtotime($expire));
+$one= 'To Expire on '.$date.'<br/>';
+$d = DateTime::createFromFormat(
+    'Y M d H:i:s',
+    $dbdate,
+    new DateTimeZone('EST')
+);
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+if ($d === false) {
+    die("Incorrect date string");
+} else {
+    $expiredate=$d->getTimestamp();
+}
 
-    
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script type="text/javascript" src="bootstrap/google-code-prettify/prettify.js"></script>
-	<script type="text/javascript">
-			$(document).ready(function() {
-				$("*").DomInspector({
-					callback : function(results) {
-						// Returns an Array of each element
-						$(".results").html(results.join(", "));
-					}
-				
-				});
-			
-				// make code pretty
-			    window.prettyPrint && prettyPrint();
-			});
-			
-	</script>
-		
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="bootstrap/css/docs.css" rel="stylesheet">
-    <link href="bootstrap/google-code-prettify/prettify.css" rel="stylesheet">
-    <style type="text/css">
-    	body {
-    		padding-top: 25px;
-    	}
-    </style>
-  </head>
+$link = sha1(uniqid($file_name, true));
 
-  <body>
+$tstamp=$_SERVER["REQUEST_TIME"];
 
-    <div class="container">
-		<!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="hero-unit">
-        <h1>Single use download</h1>
-        <br>
-        <h2>Brief</h2><br>
-		<p>This script was written to be a very easy way for non-programmers to be able to create a secure way to share a single file. It is ideal for 
-		bands looking to give a single song to a single person, and invalidating the link once the song has been downloaded. However, 
-		it will work for any type of file.</p>
-		<br>
-		<h2>Description</h2><br>
-		<p>This script allows you to generate a unique link to download a file. This file will only be allowed to be downloaded one time. 
-		This link will also have also have an expiration date set on it.</p>
-		<br>
-		<p>For instance, if you wanted to sell a song for your band. You sold the song on your website for $1, you could use this script 
-		to allow that person to download your song only one time. It would only give them a limited number of hours/days/weeks/years 
-		to claim their download.</p>
-		<br>
-		<p>You can also mask the name of the file being downloaded, for further protection. For example, if your song was called 
-		"greatsong.zip", you could set the download link as "Band_Awesome-Awesome_Song.zip" (it is not a good idea to leave spaces in URL titles)</p>
-    <h2>Update</h2><br>
-    <p>On July 11, 2016 a multi-file feature branch was merged with the single file. It is now possible to download multiple files at once. </p>
-        <br>
-        <h2>Example</h2><br>
-        <p><a href="/singleuse/generate.php?1234">Generate a download link</a></p>
-        <br>
-        <h2>Git the code</h2><br>
-        <p><a href="https://github.com/joshpangell/single-use">Github repository</a></p>
-        <br>
-		</div>
+mysqli_query($db,"INSERT INTO links(`link`,`file`, `counting`, `expire`, `tstamp`)
+VALUES ('$link', '$file_name', '$counting','$expiredate','$tstamp')");
+
+$two= '<a href="http://localhost/testing/download.php?link='.$link.' " target="_NEW">Link</a>';
+}
+?>
+<div class="container">
+<div class="jumbotron"><p class="text-xl-center"><?php if(isset($one)){echo $one.$two;};?></p></div>
+<h1 class="animated bounce"><span class="glyphicon glyphicon-link"></span>Generate A Link That Expires</h1>
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">	
+	<form method="post" role="form" enctype="multipart/form-data">
+	<div class="form-group">
+	<label for="file">Select File:</label>
+	<input type="file" class="form-control" name="file" required>
 	</div>
-	
-     <footer class="footer">
-      <div class="container">
-		<p>
-         Made by Josh Pangell <a href="http://joshpangell.com">http://joshpangell.com</a><br>
-         This demo page was built using <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter bootstrap</a>
-        </p>
-      </div>
-    </footer>
-
-    </div> <!-- /container -->
-
-
-  </body>
-</html>
+	<div class="form-group">
+	<label for="counting">How Many Times Can Link Be Accessed?:</label>
+	<input type="tel" class="form-control" name="counting" required>
+	</div>
+	<div class="form-group">
+	<label for="date">Set Expiration Date and Time For Link:</label>
+	<input type="datetime-local" class="form-control" name="date" required>
+	</div>
+	<input type="submit" name="submit" class="btn btn-success btn-lg" value="submit" />
+	</form>
+	</div>
+    <div class="col-sm-4"></div>
+</div>
+</div>
+<?php 
+include('footer.php');
+?>
