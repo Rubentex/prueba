@@ -12,7 +12,7 @@ $files = array(
 // Base URL of the application
 define('BASE_URL','http://'. $_SERVER['HTTP_HOST'].'/');
 // Path of the download-link.php file
-define('DOWNLOAD_PATH', BASE_URL.'download.php');
+define('DOWNLOAD_PATH', BASE_URL.'download-link.php');
 // Path of the token directory to store keys
 define('TOKEN_DIR', 'tokens');
 // Authentication password to generate download links
