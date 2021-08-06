@@ -1,13 +1,18 @@
 <?php
 // Array of the files with an unique ID
 $files = array(
-'FID12345' => array(
-'content_type' => 'application/zip',
-'suggested_name' => 'tutorials-file.zip',
-'file_path' => 'tempfile.zip',
-'type' => 'local_file'
-)
-
+    'UID12345' => array(
+        'content_type' => 'application/zip', 
+        'suggested_name' => 'codex.zip', 
+        'file_path' => 'tempfile.zip',
+        'type' => 'local_file'
+    ),
+    'UID67890' => array(
+        'content_type' => 'application/zip', 
+        'suggested_name' => 'codex2.zip', 
+        'file_path' => 'tempfile2.zip',
+        'type' => 'remote_file'
+    ),
 );
 // Base URL of the application
 define('BASE_URL','http://'. $_SERVER['HTTP_HOST'].'/generate_temporary_download_link_php/');
