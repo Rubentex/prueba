@@ -11,7 +11,7 @@ $files = array(
 'content_type' => 'application/zip',
 'suggested_name' => 'codex2.zip',
 'file_path' => 'https://bit.ly/3rK1Jw3',
-'type' => 'local_file'
+'type' => 'remote_file'
 ),
 );
 // Base URL of the application
