@@ -93,7 +93,7 @@ if(!isset($_GET['tid'])):
     <div style="text-align:center;margin:3em auto;">
     <form name="myform" id="myform" method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
         Permalink:&nbsp;&nbsp;
-        <input type="text" name="permalink" id="permalink" value="https://www.youtube.com/watch?v=yqqzGRzbXfk"/>
+        <input type="text" name="permalink" id="permalink" value="http://"/>
         <br/><br/>
         Expires in:&nbsp;&nbsp;&nbsp;
         <input type="text" name="expires_in" id="expires_in" size="6" value="60"/>&nbsp; minutes
