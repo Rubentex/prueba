@@ -15,7 +15,7 @@ $files = array(
     ),
 );
 // Base URL of the application
-define('BASE_URL','http://'. $_SERVER['HTTP_HOST'].'/');
+define('BASE_URL','http://'. $_SERVER['HTTP_HOST'].'/generate-one-time-download-link-with-expiration-php/');
 // Path of the download-link.php file
 define('DOWNLOAD_PATH', BASE_URL.'download.php');
 // Path of the token directory to store keys
@@ -29,3 +29,5 @@ define('EXPIRATION_TIME', '+5 minutes');
     header("Cache-Control: no-cache, must-revalidate");
     header("Expires: ".date('U', strtotime(EXPIRATION_TIME)));
 ?>
+
+http://demos.codexworld.com/generate-one-time-download-link-with-expiration-php/download.php?fid=VUlEMTIzNDU=&key=1628274294-key610d7e76cedf31.22257439

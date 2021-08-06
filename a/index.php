@@ -50,7 +50,7 @@ $tstamp=$_SERVER["REQUEST_TIME"];
 mysqli_query($db,"INSERT INTO links(`link`,`file`, `counting`, `expire`, `tstamp`)
 VALUES ('$link', '$file_name', '$counting','$expiredate','$tstamp')");
 
-$two= '<a href="http://localhost/testing/download.php?link='.$link.' " target="_NEW">Link</a>';
+$two= '<a href="download.php?link='.$link.' " target="_NEW">Link</a>';
 }
 ?>
 <div class="container">
