@@ -23,7 +23,7 @@ define('TOKEN_DIR', 'tokens');
 // Authentication password to generate download links
 define('OAUTH_PASSWORD','CODEXWORLD');
 // Expiration time of the link (examples: +1 year, +1 month, +5 days, +10 hours)
-define('EXPIRATION_TIME', '+5 minutes,+5 click');
+define('EXPIRATION_TIME', '+1 month,+5 click');
 // Don't worry about this
 header("Cache-Control: no-cache, must-revalidate");
 header("Expires: ".date('U', strtotime(EXPIRATION_TIME)));
