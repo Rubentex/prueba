@@ -24,10 +24,11 @@ define('TOKEN_DIR', 'tokens');
 define('OAUTH_PASSWORD','CODEXWORLD');
 // Expiration time of the link (examples: +1 year, +1 month, +5 days, +10 hours)
 define('EXPIRATION_TIME', '+5 minutes');
+// Expiration time of the link (examples: +5)
+define('CLICK_NUMBER_EXPIRATION','+5');
 
     // Don't worry about this
     header("Cache-Control: no-cache, must-revalidate");
     header("Expires: ".date('U', strtotime(EXPIRATION_TIME)));
 ?>
 
-http://demos.codexworld.com/generate-one-time-download-link-with-expiration-php/download.php?fid=VUlEMTIzNDU=&key=1628274294-key610d7e76cedf31.22257439

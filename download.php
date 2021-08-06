@@ -10,6 +10,10 @@ $key = trim($_GET['key']);
 $currentTime = time();
 $keyTime = explode('-',$key);
 $expTime = strtotime(EXPIRATION_TIME, $keyTime[0]);
+// Calculate link expiration time
+$currentClick = Click();
+$keyClick = explode('-',$key);
+$expClick = strtoClick(CLICK_NUMBER_EXPIRATION, $keyClick[0]);
 
 // Retrieve the keys from the tokens file
 $keys = file(TOKEN_DIR.'/keys');
