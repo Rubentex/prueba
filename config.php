@@ -15,7 +15,7 @@ $files = array(
     ),
 );
 // Base URL of the application
-define('BASE_URL','http://'. $_SERVER['HTTP_HOST'].'/');
+define('BASE_URL','http://'. $_SERVER['HTTP_HOST'].'/generate_temporary_download_link_php/');
 // Path of the download-link.php file
 define('DOWNLOAD_PATH', BASE_URL.'download.php');
 // Path of the token directory to store keys
