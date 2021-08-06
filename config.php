@@ -19,6 +19,3 @@ define('TOKEN_DIR', 'tokens');
 define('OAUTH_PASSWORD','Tutorialswebsite');
 // Expiration time of the link (examples: +1 year, +1 month, +5 days, +10 hours)
 define('EXPIRATION_TIME', '+5 minutes');
-// Don't worry about this
-header("Cache-Control: no-cache, must-revalidate");
-header("Expires: ".date('U', strtotime(EXPIRATION_DATE)));
