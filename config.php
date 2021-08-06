@@ -26,9 +26,3 @@ define('OAUTH_PASSWORD','CODEXWORLD');
 define('EXPIRATION_TIME', '+5 minutes');
 // Expiration time of the link (examples: +5)
 define('CLICK_NUMBER_EXPIRATION','+5');
-
-    // Don't worry about this
-    header("Cache-Control: no-cache, must-revalidate");
-    header("Expires: ".date('U', strtotime(EXPIRATION_TIME)));
-?>
-
