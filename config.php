@@ -15,7 +15,7 @@ $files = array(
     ),
 );
 // Base URL of the application
-define('BASE_URL','http://'. $_SERVER['HTTP_HOST'].'/generate-one-time-download-link-with-expiration-php/');
+define('BASE_URL','http://'. $_SERVER['HTTP_HOST'].'/');
 // Path of the download-link.php file
 define('DOWNLOAD_PATH', BASE_URL.'download.php');
 // Path of the token directory to store keys

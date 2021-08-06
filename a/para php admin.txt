@@ -1,0 +1,8 @@
+CREATE TABLE `links` (
+`id` int(11) NOT NULL,
+`link` char(40) NOT NULL,
+`file` text NOT NULL,
+`counting` int(11) NOT NULL DEFAULT 11,
+`expire` int(11) NOT NULL,
+`tstamp` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;;
