@@ -8,10 +8,10 @@ if(isset($_POST['submit'])){
 	  $fileend=explode('.',$file_name);
       $file_ext=strtolower(end($fileend));
       
-      $extensions= array("jpeg","jpg","png","pdf");
+      $extensions= array("jpeg","jpg","png","pdf","rar","zip","mp3");
       
       if(in_array($file_ext,$extensions)=== false){
-         $errors[]="extension not allowed, please choose a JPEG or PNG file.";
+         $errors[]="extensión no permitida, elija un archivo";
       }
       
       if($file_size > 2097152){
@@ -61,15 +61,15 @@ $two= '<a href="download.php?link='.$link.' " target="_NEW">Link</a>';
     <div class="col-sm-4">	
 	<form method="post" role="form" enctype="multipart/form-data">
 	<div class="form-group">
-	<label for="file">Select File:</label>
+	<label for="file">Seleccione Archivo:</label>
 	<input type="file" class="form-control" name="file" required>
 	</div>
 	<div class="form-group">
-	<label for="counting">How Many Times Can Link Be Accessed?:</label>
+	<label for="counting">¿Cuántas veces se puede acceder al enlace ?:</label>
 	<input type="tel" class="form-control" name="counting" required>
 	</div>
 	<div class="form-group">
-	<label for="date">Set Expiration Date and Time For Link:</label>
+	<label for="date">Establecer fecha y hora de vencimiento para el enlace</label>
 	<input type="datetime-local" class="form-control" name="date" required>
 	</div>
 	<input type="submit" name="submit" class="btn btn-success btn-lg" value="submit" />

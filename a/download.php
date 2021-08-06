@@ -6,7 +6,7 @@
 if (isset($_GET["link"]) && preg_match('/^[0-9A-F]{40}$/i', $_GET["link"])) {
     $link = $_GET["link"];
 }else{
-    echo "<h1>Valid link not provided.</h1>";
+    echo "<h1>Enlace válido no proporcionado.</h1>";
 	exit();
 }
 //starting verification with the $ct variable
@@ -74,7 +74,7 @@ flush();
 readfile($path); //Absolute URL
 exit();
 }else{
-	echo '<p>This file has already been dowloaded the maximum number of times.</p>';
+	echo '<p>Este archivo ya se ha descargado el número máximo de veces Para Volver descargar comunicate</p>';
 }
 ?>
 </p>
