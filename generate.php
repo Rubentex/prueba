@@ -48,7 +48,19 @@ if($oauthPass != OAUTH_PASSWORD){
     }
 }    
 ?>
-
+<!DOCTYPE html>
+<html lang="es_ES">
+<head>
+    <meta charset="utf-8">
+    <style type="text/css">
+        .container{padding: 20px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>dowlaoder</h1>
+        <h4>jsdlkdflg</h4>
+        
 <!-- List all the download links -->
 <?php if(!empty($download_links)){ ?>
     <ul>
@@ -59,3 +71,8 @@ if($oauthPass != OAUTH_PASSWORD){
 <?php }else{ ?>
     <p>Links are not found...</p>
 <?php } ?>
+<br><br>
+<a href="index.php">Back to home</a>
+</div>    
+</body>
+</html>
