@@ -36,7 +36,7 @@
 // Base URL of the application
 define('BASE_URL','http://'. $_SERVER['HTTP_HOST'].'/');
 // Path of the download-link.php file
-define('DOWNLOAD_PATH', BASE_URL.'download.php');
+define('DOWNLOAD_PATH', BASE_URL.'/singleuse/download.php');
 	
 	// The admin password to generate a new download link
 	define('ADMIN_PASSWORD','1234');
