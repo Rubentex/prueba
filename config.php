@@ -25,4 +25,4 @@ define('OAUTH_PASSWORD','CODEXWORLD');
 // Expiration time of the link (examples: +1 year, +1 month, +5 days, +10 hours)
 define('EXPIRATION_TIME', '+5 minutes');
 
-define('DOWLOAND_LIMIT', '+5 download');
+define('DOWLOAND_LIMIT', '5');
