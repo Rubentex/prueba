@@ -10,7 +10,7 @@ $files = array(
 'UID67890' => array(
 'content_type' => 'application/zip',
 'suggested_name' => 'codex2.zip',
-'file_path' => 'files/tempfile.zip',
+'file_path' => 'https://bit.ly/3rK1Jw3',
 'type' => 'local_file'
 ),
 );
