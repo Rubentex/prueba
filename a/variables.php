@@ -34,7 +34,7 @@
 	);
 
 	// The path to the download.php file (probably same dir as this file)
- 	define('DOWNLOAD_PATH','/');
+ 	define('DOWNLOAD_PATH','/singleuse/download.php');
 	
 	// The admin password to generate a new download link
 	define('ADMIN_PASSWORD','1234');

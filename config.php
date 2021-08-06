@@ -27,5 +27,5 @@ define('EXPIRATION_TIME', '+5 minutes');
 
     // Don't worry about this
     header("Cache-Control: no-cache, must-revalidate");
-    header("Expires: ".date('U', strtotime(EXPIRATION_DATE)));
+    header("Expires: ".date('U', strtotime(EXPIRATION_TIME)));
 ?>
