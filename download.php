@@ -11,6 +11,9 @@ $currentTime = time();
 $keyTime = explode('-',$key);
 $expTime = strtotime(EXPIRATION_TIME, $keyTime[0]);
 
+counting($db,"INSERT INTO links(`link`,`file`, `counting`, `expire`, `tstamp`)
+VALUES ('$link', '$file_name', '$counting','$expiredate','$tstamp')");
+
 // Retrieve the keys from the tokens file
 $keys = file(TOKEN_DIR.'/keys');
 $match = false;
